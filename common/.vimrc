@@ -1,0 +1,218 @@
+syntax on
+set encoding=utf-8
+set noerrorbells
+set tabstop=2 softtabstop=2
+set shiftwidth=2
+set expandtab
+set smartindent
+set nu
+set relativenumber
+set nowrap
+set smartcase
+" disable backups, because everything is under git anyways
+set noswapfile
+set nobackup
+"set undodir=~/.vim/undodir
+"set undofile
+set nowritebackup
+set incsearch
+set hidden
+set guicursor=
+set mouse=a
+set cmdheight=2
+set shortmess+=c
+set colorcolumn=120
+set clipboard+=unnamedplus
+set signcolumn=yes
+set termguicolors
+set scrolloff=8
+set completeopt=menuone,noselect,noinsert
+set updatetime=300
+set cursorline
+set background=dark
+set list
+set listchars=tab:→\ ,nbsp:␣,space:·,trail:·,extends:⟩,precedes:⟨
+set noendofline
+set noemoji
+
+let g:python3_host_prog = '~/python/bin/python3'
+let g:python_host_prog = '~/python/bin/python'
+
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+call plug#begin('~/.vim/plugged')
+
+" coc
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" better cpp syntax
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'bfrg/vim-cpp-modern'
+
+" colorschemes
+Plug 'gruvbox-community/gruvbox'
+
+" telescope
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+" powerline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" git
+Plug 'tpope/vim-fugitive'
+
+" fonts support
+" Droid Sans Mono for Powerline Nerd Font Complete.otf looks the best.
+" In order to apply this font, one needs to put in in ~/.local/share/fonts,
+" then select it in gnome-tweaks under 'Fonts->Monospace text'.
+Plug 'ryanoasis/vim-devicons'
+
+" tmux
+" Plug 'ojroques/vim-oscyank' "gnome terminal doesn't support OSC52
+
+" css color highlighter
+Plug 'ap/vim-css-color'
+
+" i3 syntax highlight
+Plug 'mboughaba/i3config.vim'
+
+" QML
+Plug 'peterhoeg/vim-qml'
+
+call plug#end()
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter *
+      \ if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+      \| PlugInstall --sync | q | source $MYVIMRC
+      \| endif
+
+" cpp, more info here https://github.com/bfrg/vim-cpp-modern
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_posix_standard = 1
+let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+let g:cpp_concepts_highlight = 1
+let g:cpp_attributes_highlight = 1
+let g:cpp_member_highlight = 1
+let g:cpp_simple_highlight = 1
+
+" gruvbox
+let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_italic = 1
+colorscheme gruvbox
+
+" airline
+let g:airline_theme = 'gruvbox'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gh :CocCommand clangd.switchSourceHeader<CR>
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" buffers
+" on mac escape sequence ^[[1;7D
+nmap <silent> <C-M-right> :bnext <CR>
+" on mac escape sequence ^[[1;7C
+nmap <silent> <C-M-left> :bprev <CR>
+nmap <silent> <C-w> :bp <BAR> bd #<CR>
+
+" coc-explorer
+nmap <silent> <C-b> :CocCommand explorer<CR>
+
+" telescope
+nmap <silent> <C-p> :Telescope find_files<CR>
+nmap <silent> <C-M-p> :Telescope buffers<CR>
+nmap <silent> <C-f> :Telescope live_grep<CR>
+
+" clear selection
+nnoremap <silent> <Esc><Esc> :noh<CR>:redraw!<CR>
+
+
+" saving
+nmap <F2> :w<CR>
+nmap <F3> :mks! ~/develop/*.vim
+
+" auto formatting using the av tooling
+function FormatAV()
+  if expand('%:p') =~ '/av/'
+    let pos = getpos('.')
+    let view = winsaveview()
+
+    echo 'Formatting ' . expand('%:p')
+
+    silent! undojoin
+    silent % !$(realpath /DISK1/av/bazel-bin/utilities/linting)/format %
+
+    if v:shell_error != 0
+      undo
+    endif
+
+    call setpos('.', pos)
+    call winrestview(view)
+
+  endif
+endfunction
+
+highlight ExtraWhitespace ctermbg=red guibg=red
+
+augroup av
+  autocmd!
+
+  " custom file types
+  autocmd BufEnter *.asl :setlocal filetype=python
+  autocmd BufEnter *.qml :setlocal filetype=qml
+
+  " apply autoformat
+  autocmd BufWritePost *.hh,*.inl,*.cc,*.hpp,*.cpp,*.py,*.asl,BUILD,*.bzl call FormatAV()
+
+  " trim whitespaces
+  autocmd BufWritePre * :%s/\s\+$//e
+
+  " highlight whitespaces
+  autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+  autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+  autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+  autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+
+  " i3
+  autocmd BufNewFile,BufRead ~/.config/i3/config set filetype=i3config
+augroup END
+

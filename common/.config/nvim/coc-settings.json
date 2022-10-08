@@ -1,0 +1,17 @@
+{
+  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/12.0.1/clangd_12.0.1/bin/clangd",
+  "clangd.semanticHighlighting": true,
+  "clangd.enabled": true,
+  "clangd.arguments": [
+      "-j",
+      "16",
+      "--header-insertion=never",
+      "--clang-tidy",
+      "--background-index=1"
+  ],
+  "explorer.file.showHiddenFiles": true,
+  "explorer.file.reveal.auto": true,
+  "explorer.mouseMode": "singleclick",
+  "explorer.focus": false,
+  "explorer.icon.enableNerdfont": true
+}
