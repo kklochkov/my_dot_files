@@ -23,5 +23,11 @@ export MANPATH=$MANPATH:~/develop/exa/man
 export VISUAL=vi
 export EDITOR="$VISUAL"
 
+# nodejs
+export PATH=$PATH:~/develop/node-v18.13.0-linux-x64/bin
+
 # remap capslock for whole system to ESC (X only)
 setxkbmap -option caps:escape
+
+# german layout
+setxkbmap de

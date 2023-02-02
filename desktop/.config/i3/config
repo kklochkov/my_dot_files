@@ -32,7 +32,8 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec gnome-terminal
+#bindsym $mod+Return exec gnome-terminal
+bindsym $mod+Return exec wezterm
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -99,7 +100,7 @@ set $media "1:"
 set $code "2:"
 set $terminals "3:"
 set $zoom "4:"
-set $argonaut "5:"
+set $talos "5:"
 
 set $laptop_screen DP-0
 set $secondary_monitor DP-5.1
@@ -108,14 +109,14 @@ workspace $terminals output $secondary_monitor $laptop_screen
 workspace $media output $secondary_monitor $laptop_screen
 workspace $zoom output $secondary_monitor $laptop_screen
 workspace $vscode output $secondary_monitor $laptop_screen
-workspace $argonaut output $secondary_monitor $laptop_screen
+workspace $talos output $secondary_monitor $laptop_screen
 
 # switch to workspace
 bindsym $mod+1 workspace $media
 bindsym $mod+2 workspace $code
 bindsym $mod+3 workspace $terminals
 bindsym $mod+4 workspace $zoom
-bindsym $mod+5 workspace $argonaut
+bindsym $mod+5 workspace $talos
 bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
@@ -127,7 +128,7 @@ bindsym $mod+Shift+1 move container to workspace $media
 bindsym $mod+Shift+2 move container to workspace $code
 bindsym $mod+Shift+3 move container to workspace $terminals
 bindsym $mod+Shift+4 move container to workspace $zoom
-bindsym $mod+Shift+5 move container to workspace $argonaut
+bindsym $mod+Shift+5 move container to workspace $talos
 bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
@@ -142,15 +143,15 @@ assign [class="Google-chrome"] $media
 assign [class="Slack"] $media
 assign [class="zoom"] $zoom
 assign [class="Code"] $code
-assign [class="VisualizationTask"] $argonaut
-assign [class="LogReplayTaskGUI"] $argonaut
-assign [class="SimGUI"] $argonaut
-assign [class="sysmon_ui"] $argonaut
+assign [class="VisualizationTask"] $talos
+assign [class="LogReplayTaskGUI"] $talos
+assign [class="SimGUI"] $talos
+assign [class="sysmon_ui"] $talos
 
 # my_i3_status binding
-set $my_i3_status python3 -u ~/develop/my_dot_files/common/my_i3_status.py -m i3 -d /dev/nvme0n1p2 -d /dev/sda1
+set $my_i3_status python3 -u ~/develop/my_dot_files/common/my_i3_status.py -m i3 -d /dev/nvme0n1p2 -d /dev/mapper/vgubuntu-root
 # https://i3wm.org/docs/i3status.html#_signals
-set $my_i3_status_refresh pkill -SIGUSR1 -f '^python3 -u .+my_i3_status.py -m i3 -d /dev/nvme0n1p2 -d /dev/sda1$'
+set $my_i3_status_refresh pkill -SIGUSR1 -f '^python3 -u .+my_i3_status.py -m i3 -d /dev/nvme0n1p2 -d /dev/mapper/vgubuntu-root'
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -263,7 +264,8 @@ exec_always --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScr
 
 # Default apps
 exec --no-startup-id google-chrome
-exec --no-startup-id slack
+exec --no-startup-id teams
+#exec --no-startup-id slack
 
 # Default wallpaper for both monitors
 exec --no-startup-id feh --no-fehbg --bg-scale $wallpaper $wallpaper
@@ -278,5 +280,5 @@ exec_always --no-startup-id xrandr --output $secondary_monitor --auto --primary 
 # compositor
 exec --no-startup-id compton
 
-# volumeicon
+# volumeicon (https://zoomadmin.com/HowToInstall/UbuntuPackage/volumeicon-alsa)
 exec --no-startup-id volumeicon
