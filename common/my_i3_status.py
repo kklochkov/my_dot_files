@@ -89,12 +89,13 @@ class Info:
             self.__prepare_data__()
 
     def __format_percentage_data__(self, percentage, invert_colors=False):
+        # "▁▂▄▆█"
         states = [
-            {"icon": "_", "color": "#00ff00" if not invert_colors else "#ff0000"},
-            {"icon": "▂", "color": "#00ff00" if not invert_colors else "#ff0000"},
-            {"icon": "▄", "color": "#ffff00"},
-            {"icon": "▆", "color": "#ffff00" if not invert_colors else "#00ff00"},
-            {"icon": "█", "color": "#ff0000" if not invert_colors else "#00ff00"}
+            {"icon": "\u2581", "color": "#00ff00" if not invert_colors else "#ff0000"},
+            {"icon": "\u2582", "color": "#00ff00" if not invert_colors else "#ff0000"},
+            {"icon": "\u2584", "color": "#ffff00"},
+            {"icon": "\u2586", "color": "#ffff00" if not invert_colors else "#00ff00"},
+            {"icon": "\u2588", "color": "#ff0000" if not invert_colors else "#00ff00"}
         ]
 
         state = states[0]
@@ -164,59 +165,10 @@ class BatInfo(Info):
     def __init__(self, refresh_rate):
         super().__init__(refresh_rate=refresh_rate)
 
-        self.__battery__ = "BAT0"
-        self.__has_battery__ = os.path.exists("/sys/class/power_supply/BAT0")
-
     def __prepare_data__(self):
-        if not self.__has_battery__:
-            return
-
-        battery = {}
-        on_battery = False
-        battery_found = False
-        try:
-            with subprocess.Popen(["upower", "-d"], stdout=subprocess.PIPE, universal_newlines=True) as proc:
-                proc.wait()
-                for line in proc.stdout:
-                    data = line.split(maxsplit=1)
-
-                    if len(data) < 2:
-                        continue
-
-                    key = data[0]
-                    value = data[1][:-1]
-
-                    if key == "Device:":
-                        battery_found = value.endswith(self.__battery__)
-
-                    if battery_found:
-                        if key == "energy:":
-                            battery["energy"] = locale.atof(value[:-3])
-
-                        if key == "energy-full:":
-                            battery["energy_full"] = locale.atof(value[:-3])
-
-                        if key == "energy-rate:":
-                            battery["energy_rate"] = locale.atof(value[:-2])
-
-                        if key == "percentage:":
-                            battery["percentage"] = locale.atoi(value[:-1])
-
-                    if key == "on-battery:":
-                        on_battery = value == "yes"
-
-            if not len(battery):
-                return
-
-            self.__format_i3_data__(
-                energy=battery["energy"],
-                energy_full=battery["energy_full"],
-                energy_rate=battery["energy_rate"],
-                percentage=battery["percentage"],
-                on_battery=on_battery
-            )
-        except FileNotFoundError:
-            pass
+        bat_info = psutil.sensors_battery()
+        if bat_info != None:
+            self.__format_i3_data__(bat_info=bat_info)
 
     def __format_battery_state_data__(self, percentage):
         battery_states = [
@@ -239,24 +191,16 @@ class BatInfo(Info):
 
         return battery_state["icon"], battery_state["color"]
 
-    def __format_i3_data__(self, energy, energy_full, energy_rate, percentage, on_battery):
-        delta_energy = energy_full - energy
-        if on_battery:
-            delta_energy = energy
-
-        hours_float = delta_energy / max(1.0, energy_rate)
-        hours = int(hours_float)
-        minutes_float = (hours_float - hours) * 60
-        minutes = int(minutes_float)
-        seconds_float = (minutes_float - minutes) * 60
-        seconds = int(seconds_float)
-
-        icon, color = self.__format_battery_state_data__(percentage=percentage)
-        status_line = "{separator} {on_battery_icon}{icon}{percentage}%{time} ".format(
+    def __format_i3_data__(self, bat_info):
+        has_time = (bat_info.secsleft != psutil.POWER_TIME_UNKNOWN) and (bat_info.secsleft != psutil.POWER_TIME_UNLIMITED)
+        minutes, seconds = divmod(bat_info.secsleft, 60)
+        hours, minutes = divmod(minutes, 60)
+        icon, color = self.__format_battery_state_data__(percentage=bat_info.percent)
+        status_line = "{separator} {on_battery_icon} {icon} {percentage}%{time} ".format(
             separator=SHELL_SEGMENT_SEPARATOR,
-            on_battery_icon="" if on_battery else "\uf1e6 ",
-            icon=icon, percentage=percentage,
-            time=" ({hours:0>2}:{minutes:0>2}:{seconds:0>2})".format(hours=hours, minutes=minutes, seconds=seconds) if on_battery or percentage < 100 else "")
+            on_battery_icon="" if not bat_info.power_plugged else "\uf1e6 ",
+            icon=icon, percentage=bat_info.percent,
+            time=" ({hours:0>2}:{minutes:0>2}:{seconds:0>2})".format(hours=hours, minutes=minutes, seconds=seconds) if has_time else "")
 
         self.__add_i3_object__(
             name="batteryInfo",
@@ -564,7 +508,7 @@ class GpuInfo(Info):
         )
 
 
-class NetInfo(Info):
+class NetInfoLinux(Info):
     def __init__(self, refresh_rate, iface_to_observe):
         super().__init__(refresh_rate=refresh_rate)
 
@@ -689,6 +633,127 @@ class NetInfo(Info):
 
 
 
+class NetInfoMac(Info):
+    def __init__(self, refresh_rate, iface_to_observe):
+        super().__init__(refresh_rate=refresh_rate)
+
+        self.__iface_to_observe__ = iface_to_observe
+
+    def __prepare_data__(self):
+        devices = {}
+        try:
+            with subprocess.Popen(["ifconfig", "-v", "-u", "-X", "^(e.|u.)"],
+                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True) as proc:
+                proc.wait()
+
+                current_device = str()
+                current_inet = str()
+                current_status = str()
+                current_type = str()
+                current_quality = str()
+                for line in proc.stdout:
+                    index = line.find(": flags=")
+                    if index != -1:
+                        if len(current_device) and len(current_inet):
+                            print(current_device, file=sys.stderr)
+                            print(current_inet, file=sys.stderr)
+                            print(current_type, file=sys.stderr)
+                            print(current_status, file=sys.stderr)
+                            print(current_quality, file=sys.stderr)
+                            current_device = str()
+                            current_inet = str()
+                            current_status = str()
+                            current_type = str()
+                            current_quality = str()
+
+                        current_device = line[0:index]
+                    elif line.find("inet ") != -1:
+                        current_inet = line
+                    elif line.find("status: ") != -1:
+                        current_status = line
+                    elif line.find("type: ") != -1:
+                        current_type = line
+                    elif line.find("link quality: ") != -1:
+                        current_quality = line
+
+            print(current_device, file=sys.stderr)
+            print(current_inet, file=sys.stderr)
+            print(current_type, file=sys.stderr)
+            print(current_status, file=sys.stderr)
+            print(current_quality, file=sys.stderr)
+        except FileNotFoundError:
+            pass
+
+        self.__format_i3_data__(devices=devices)
+
+    def __format_wifi__(self, icon, device_id, ip, connection, signal):
+        bar, color = self.__format_percentage_data__(
+            signal, invert_colors=True)
+        self.__add_i3_object__(
+            name="netInfo",
+            full_text="{separator} {icon} ".format(separator=SHELL_SEGMENT_SEPARATOR, icon=icon),
+            instance="icon_{}".format(device_id),
+            color=color
+        )
+        self.__add_i3_object__(
+            name="netInfo",
+            full_text=connection,
+            short_text="",
+            instance="connection_{device_id}".format(device_id=device_id),
+            color=color
+        )
+        self.__add_i3_object__(
+            name="netInfo",
+            full_text=" {bar}".format(bar=bar),
+            short_text="",
+            instance="bar_{device_id}".format(device_id=device_id),
+            color=color
+        )
+        self.__add_i3_object__(
+            name="netInfo",
+            short_text="",
+            full_text=" {signal}% ".format(signal=signal),
+            instance="signal_{device_id}".format(device_id=device_id),
+            color=color
+        )
+        self.__add_i3_object__(
+            name="netInfo",
+            full_text="[{ip}] ".format(ip=ip),
+            short_text=ip,
+            instance="ip_{device_id}".format(device_id=device_id),
+            color=color
+        )
+
+    def __format_device__(self, icon, device_id, ip):
+        self.__add_i3_object__(
+            name="netInfo",
+            full_text="{separator} {icon} ".format(separator=SHELL_SEGMENT_SEPARATOR, icon=icon),
+            instance="icon_{device_id}".format(device_id=device_id)
+        )
+        self.__add_i3_object__(
+            name="netInfo",
+            full_text="{ip} ".format(ip=ip),
+            instance="ip_{device_id}".format(device_id=device_id)
+        )
+
+    def __format_i3_data__(self, devices):
+        for key in devices:
+            device = devices[key]
+            icon = self.__iface_to_observe__[key[0]]
+            ip = device.get("ip")
+            if not ip:
+                continue
+
+            if device["type"] == "wifi":
+                connection = device["connection"]
+                signal = device["signal"]
+                self.__format_wifi__(
+                    icon=icon, device_id=key, ip=ip, connection=connection, signal=signal)
+            else:
+                self.__format_device__(icon=icon, device_id=key, ip=ip)
+
+
+
 class TimeInfo(Info):
     def __prepare_data__(self):
         self.__add_i3_object__(
@@ -786,7 +851,9 @@ def shell_mode(components):
         In shell mode the script prints a status line and exists.""", required=True)
 @click.option("-d", "--hard-drive", type=str, multiple=True, help="A name of a hard-drive to observe.", required=True)
 def main(mode, hard_drive):
-    net_info = NetInfo(refresh_rate=5, iface_to_observe={"e": "\uf0e8", "w": "\uf1eb", "g": "\uf0f7"})
+    # net_info = NetInfo(refresh_rate=5, iface_to_observe={"e": "\uf0e8", "w": "\uf1eb", "g": "\uf0f7", "u": "\uf0f7"})
+    iface_to_observe={"e": "\uf0e8", "w": "\uf1eb", "g": "\uf0f7", "u": "\uf0f7"}
+    net_info = NetInfoLinux(refresh_rate=5, iface_to_observe=iface_to_observe) if sys.platform.startswith('linux') else NetInfoMac(refresh_rate=5, iface_to_observe=iface_to_observe)
     hdd_info = HddInfo(refresh_rate=60, drives_to_observe=list(hard_drive))
     cpu_info = CpuInfo(refresh_rate=5)
     gpu_info = GpuInfo(refresh_rate=5)
