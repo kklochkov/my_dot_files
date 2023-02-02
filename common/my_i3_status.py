@@ -199,7 +199,7 @@ class BatInfo(Info):
         status_line = "{separator} {on_battery_icon} {icon} {percentage}%{time} ".format(
             separator=SHELL_SEGMENT_SEPARATOR,
             on_battery_icon="" if not bat_info.power_plugged else "\uf1e6 ",
-            icon=icon, percentage=bat_info.percent,
+            icon=icon, percentage=int(bat_info.percent),
             time=" ({hours:0>2}:{minutes:0>2}:{seconds:0>2})".format(hours=hours, minutes=minutes, seconds=seconds) if has_time else "")
 
         self.__add_i3_object__(
