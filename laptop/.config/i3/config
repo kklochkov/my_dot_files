@@ -18,8 +18,7 @@ set $mod Mod4
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 # font pango:DejaVu Sans Mono 7
-font pango:DejaVu Sans Mono, Droid Sans Mono for Powerline Nerd Font Complete 7
-# font pango:DejaVu Sans Mono 10
+font pango:DroidSansMono, Nerd Font Book 9
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -33,7 +32,7 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec gnome-terminal
+bindsym $mod+Return exec wezterm
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -103,7 +102,7 @@ set $zoom "4:"
 set $argonaut "5:"
 
 set $laptop_screen DP-0
-set $secondary_monitor DP-5.2
+set $secondary_monitor DP-5.1
 
 workspace $terminals output $secondary_monitor $laptop_screen
 workspace $media output $secondary_monitor $laptop_screen
@@ -146,11 +145,12 @@ assign [class="Code"] $code
 assign [class="VisualizationTask"] $argonaut
 assign [class="LogReplayTaskGUI"] $argonaut
 assign [class="SimGUI"] $argonaut
+assign [class="sysmon_ui"] $argonaut
 
 # my_i3_status binding
-set $my_i3_status python3 -u ~/develop/my_dot_files/common/my_i3_status.py -m i3 -d /dev/mapper/ubuntu--vg-root -d /dev/mapper/vg--crypto--root-root
+set $my_i3_status python3 -u ~/develop/my_dot_files/common/my_i3_status.py -m i3 -d /dev/nvme0n1p2 -d /dev/mapper/vgubuntu-root
 # https://i3wm.org/docs/i3status.html#_signals
-set $my_i3_status_refresh pkill -SIGUSR1 -f '^python3 -u .+my_i3_status.py -m i3 -d /dev/mapper/ubuntu--vg-root -d /dev/mapper/vg--crypto--root-root$'
+set $my_i3_status_refresh pkill -SIGUSR1 -f '^python3 -u .+my_i3_status.py -m i3 -d /dev/nvme0n1p2 -d /dev/mapper/vgubuntu-root$'
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -160,7 +160,8 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # lock
-set $wallpaper /home/kklochkov/.cache/wallpaper/0_5_1920_1080_792beab7550410d531e55f95b449f135
+# taken from https://gitlab.com/dwt1/wallpapers/-/blob/master/0290.jpg
+set $wallpaper /home/kklochkov/Pictures/0290.png
 bindsym $mod+l exec i3lock -t -i $wallpaper
 
 # Pulse Audio controls, use 'pactl list sinks' to query sinks
@@ -197,6 +198,17 @@ bindsym Control+Shift+F4 exec --no-startup-id xrasengan --try-reload-active-layo
 # bindsym $mod+Control+Shift+F4 exec --no-startup-id xrandr --output $laptop_screen --auto --primary --panning 1920x1080+0+0
 # bindsym Control+Shift+F4 exec --no-startup-id xrasengan --try-reload-active-layout
 
+# spotify: https://github.com/pwittchen/spotify-cli-linux
+#bindsym XF86AudioPlay exec --no-startup-id spotifycli --playpause
+#bindsym XF86AudioPrev exec --no-startup-id spotifycli --prev
+#bindsym XF86AudioNext exec --no-startup-id spotifycli --next
+
+# Spotify related key bindings: https://www.reddit.com/r/i3wm/comments/2bhhog/mediakeys_spotify_for_noobs/
+bindsym XF86AudioPlay exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
+bindsym XF86AudioStop exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop"
+bindsym XF86AudioPrev exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
+bindsym XF86AudioNext exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
+
 # Screenshots
 bindsym Print exec --no-startup-id gnome-screenshot -w
 
@@ -229,24 +241,32 @@ bindsym $mod+r mode "resize"
 hide_edge_borders both
 default_border pixel
 
+# class                 border  backgr. text    indicator child_border
+client.focused          #4c7899 #285577 #ffffff #00af00   #00af00
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
+        colors {
+                background #000000c0
+        }
+        i3bar_command i3bar --transparency
         position top
         status_command $my_i3_status
-
-        #tray_output primary
 }
 
+# i3-gaps: https://github.com/Airblader/i3
+gaps inner 5
+
 # Natural scrolling
-exec_always --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScrollDelta=-78 HorizontalScrollDelta=-78
+#exec_always --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScrollDelta=-78 HorizontalScrollDelta=-78
 
 # Default apps
 exec --no-startup-id google-chrome
 exec --no-startup-id slack
 
 # Default wallpaper for both monitors
-exec_always --no-startup-id feh --no-fehbg --bg-scale $wallpaper $wallpaper
+exec --no-startup-id feh --no-fehbg --bg-scale $wallpaper $wallpaper
 
 # Disable panning
 #exec_always  --no-startup-id xrandr --output DP-0 --mode 1920x1080 --panning 1920x1080+0+0
@@ -254,3 +274,9 @@ exec_always --no-startup-id feh --no-fehbg --bg-scale $wallpaper $wallpaper
 # Enable external monitor
 exec_always --no-startup-id xrandr --output $secondary_monitor --auto --primary --output $laptop_screen --off
 # exec_always --no-startup-id xrandr --output $secondary_monitor --auto --primary --right-of $laptop_screen
+
+# compositor
+exec --no-startup-id compton
+
+# volumeicon
+exec --no-startup-id volumeicon
