@@ -1,17 +1,8 @@
 local wezterm = require 'wezterm';
 
-wezterm.on("update-right-status", function(window, pane)
-      local success, data, stderr = wezterm.run_child_process({
-        "python3", "/Users/nullptr/develop/my_dot_files/common/my_i3_status.py",
-        "-m", "shell",
-        "-d", "/dev/disk3s1s1",
-        "-d", "/dev/disk3s5"
-      });
-      window:set_right_status(data);
-end);
-
 return {
-  font = wezterm.font 'DroidSansMono Nerd Font',
+  -- https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf
+  font = wezterm.font 'DroidSansMono Nerd Font Mono',
   font_size = 12,
   color_scheme = "Monokai Soda",
   unix_domains = {
@@ -30,10 +21,9 @@ return {
     top = 0,
     bottom = 0,
   },
-  status_update_interval = 10000, -- every 10 seconds
   window_frame = {
     font = wezterm.font {
-      family = 'DroidSansMono Nerd Font',
+      family = 'DroidSansMono Nerd Font Mono',
     },
     font_size = 10,
   },
