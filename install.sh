@@ -63,4 +63,10 @@ if [ -d ~/.config/mc ] || [ -L ~/.config/mc ]; then
 fi
 ln -s $common_path/.config/mc ~/.config/mc
 
+if [ -f ~/.wezterm.lua ] || [ -L ~/.wezterm.lua ]; then
+  echo "Renaming '~/.wezterm.lua' to '~/.wezterm.lua.bak'"
+  mv ~/.wezterm.lua ~/.wezterm.lua.bak
+fi
+ln -s $common_path/.wezterm.lua ~/.wezterm.lua
+
 echo "Done."
