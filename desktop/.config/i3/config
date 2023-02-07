@@ -140,13 +140,8 @@ bindsym $mod+Shift+0 move container to workspace 10
 bindsym $mod+x move workspace to output right
 
 assign [class="Google-chrome"] $media
-assign [class="Slack"] $media
-assign [class="zoom"] $zoom
-assign [class="Code"] $code
-assign [class="VisualizationTask"] $talos
-assign [class="LogReplayTaskGUI"] $talos
-assign [class="SimGUI"] $talos
-assign [class="sysmon_ui"] $talos
+assign [class="microsoft teams - preview"] $media
+assign [class="gui"] $talos
 
 # my_i3_status binding
 set $my_i3_status python3 -u ~/develop/my_dot_files/common/my_i3_status.py -m i3 -d /dev/nvme0n1p2 -d /dev/mapper/vgubuntu-root
