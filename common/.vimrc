@@ -35,9 +35,6 @@ set listchars=tab:→\ ,nbsp:␣,space:·,trail:·,extends:⟩,precedes:⟨
 set noendofline
 set noemoji
 
-let g:python3_host_prog = '~/python/bin/python3'
-let g:python_host_prog = '~/python/bin/python'
-
 " Install vim-plug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -143,9 +140,7 @@ endfunction
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
 " buffers
 " on mac escape sequence ^[[1;7D
@@ -159,7 +154,7 @@ nmap <silent> <C-b> :CocCommand explorer<CR>
 
 " telescope
 nmap <silent> <C-p> :Telescope find_files<CR>
-nmap <silent> <C-M-p> :Telescope buffers<CR>
+nmap <silent> <C-A-p> :Telescope buffers<CR>
 nmap <silent> <C-f> :Telescope live_grep<CR>
 
 " clear selection
@@ -170,38 +165,34 @@ nnoremap <silent> <Esc><Esc> :noh<CR>:redraw!<CR>
 nmap <F2> :w<CR>
 nmap <F3> :mks! ~/develop/*.vim
 
-" auto formatting using the av tooling
-function FormatAV()
-  if expand('%:p') =~ '/av/'
-    let pos = getpos('.')
-    let view = winsaveview()
+" auto formatting using the clang-format tooling
+function FormatSources()
+  let pos = getpos('.')
+  let view = winsaveview()
 
-    echo 'Formatting ' . expand('%:p')
+  echo 'Formatting ' . expand('%:p')
 
-    silent! undojoin
-    silent % !$(realpath /DISK1/av/bazel-bin/utilities/linting)/format %
+  silent! undojoin
+  silent % !clang-format %
 
-    if v:shell_error != 0
-      undo
-    endif
-
-    call setpos('.', pos)
-    call winrestview(view)
-
+  if v:shell_error != 0
+   undo
   endif
+
+  call setpos('.', pos)
+  call winrestview(view)
 endfunction
 
 highlight ExtraWhitespace ctermbg=red guibg=red
 
-augroup av
+augroup develop
   autocmd!
 
   " custom file types
-  autocmd BufEnter *.asl :setlocal filetype=python
   autocmd BufEnter *.qml :setlocal filetype=qml
 
   " apply autoformat
-  autocmd BufWritePost *.hh,*.inl,*.cc,*.hpp,*.cpp,*.py,*.asl,BUILD,*.bzl call FormatAV()
+  autocmd BufWritePost *.h,*.hh,*.inl,*.cc,*.hpp,*.cpp call FormatSources()
 
   " trim whitespaces
   autocmd BufWritePre * :%s/\s\+$//e
