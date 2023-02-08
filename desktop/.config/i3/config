@@ -145,9 +145,9 @@ assign [class="microsoft teams - preview"] $media
 assign [class="gui"] $talos
 
 # my_i3_status binding
-set $my_i3_status python3 -u ~/develop/my_dot_files/common/my_i3_status.py -m i3 -d /dev/nvme0n1p2 -d /dev/mapper/vgubuntu-root
+set $my_i3_status python3 -u ~/develop/my_dot_files/common/my_i3_status.py -m i3 -d /dev/mapper/vgubuntu-root
 # https://i3wm.org/docs/i3status.html#_signals
-set $my_i3_status_refresh pkill -SIGUSR1 -f '^python3 -u .+my_i3_status.py -m i3 -d /dev/nvme0n1p2 -d /dev/mapper/vgubuntu-root'
+set $my_i3_status_refresh pkill -SIGUSR1 -f '^python3 -u .+my_i3_status.py -m i3 -d /dev/mapper/vgubuntu-root'
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -159,7 +159,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # lock
 # taken from https://gitlab.com/dwt1/wallpapers/-/blob/master/0290.jpg
 set $wallpaper /home/kklochkov/Pictures/0290.png
-bindsym $mod+l exec i3lock -t -i $wallpaper
+bindsym $mod+l exec i3lock -e -f -t -i $wallpaper
 
 # Pulse Audio controls, use 'pactl list sinks' to query sinks
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $my_i3_status_refresh # increase vol volume
