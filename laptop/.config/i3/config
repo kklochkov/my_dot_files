@@ -101,8 +101,8 @@ set $terminals "3:"
 set $zoom "4:"
 set $argonaut "5:"
 
-set $laptop_screen DP-0
-set $secondary_monitor DP-5.1
+set $laptop_screen eDP-1
+set $secondary_monitor DP-3-3
 
 workspace $terminals output $secondary_monitor $laptop_screen
 workspace $media output $secondary_monitor $laptop_screen
@@ -272,7 +272,7 @@ exec --no-startup-id feh --no-fehbg --bg-scale $wallpaper $wallpaper
 #exec_always  --no-startup-id xrandr --output DP-0 --mode 1920x1080 --panning 1920x1080+0+0
 
 # Enable external monitor
-exec_always --no-startup-id xrandr --output $secondary_monitor --auto --primary --output $laptop_screen --off
+# exec_always --no-startup-id xrandr --output $secondary_monitor --auto --primary --output $laptop_screen --off
 # exec_always --no-startup-id xrandr --output $secondary_monitor --auto --primary --right-of $laptop_screen
 
 # compositor
