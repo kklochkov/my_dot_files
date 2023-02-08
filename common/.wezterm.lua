@@ -14,7 +14,13 @@ return {
     },
   },
   default_gui_startup_args = { 'connect', 'unix' },
-  inactive_pane_hsb = {
+  ssh_domains = {
+    {
+      name = 'kklochkov-bbox',
+      remote_address = 'kklochkov-bbox',
+      username = 'kklochkov',
+    },
+  },  inactive_pane_hsb = {
     saturation = 1.0,
     brightness = 0.3,
   },
