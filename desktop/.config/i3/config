@@ -159,7 +159,9 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # lock
 # taken from https://gitlab.com/dwt1/wallpapers/-/blob/master/0290.jpg
 set $wallpaper /home/kklochkov/Pictures/0290.png
-bindsym $mod+l exec i3lock -e -f -t -i $wallpaper
+# https://github.com/Raymo111/i3lock-color
+#bindsym $mod+l exec i3lock -e -f -i $wallpaper
+bindsym $mod+l exec i3lock -e -f -i $wallpaper --scale --clock --time-color=ffffffff --date-color=ffffffff
 
 # Pulse Audio controls, use 'pactl list sinks' to query sinks
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $my_i3_status_refresh # increase vol volume
