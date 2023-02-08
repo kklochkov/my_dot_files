@@ -103,8 +103,8 @@ set $terminals "3:"
 set $zoom "4:"
 set $talos "5:"
 
-set $laptop_screen DP-0
-set $secondary_monitor DP-5.1
+set $laptop_screen eDP-1
+set $secondary_monitor DP-2-3
 
 workspace $terminals output $secondary_monitor $laptop_screen
 workspace $media output $secondary_monitor $laptop_screen
