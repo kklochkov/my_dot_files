@@ -31,4 +31,16 @@ return {
     },
     font_size = 10,
   },
+  keys = {
+    {
+      key = 'h',
+      mods = 'CTRL|SHIFT|ALT',
+      action = wezterm.action.SplitHorizontal{domain="CurrentPaneDomain"},
+    },
+    {
+      key = 'v',
+      mods = 'CTRL|SHIFT|ALT',
+      action = wezterm.action.SplitVertical{domain="CurrentPaneDomain"},
+    },
+  },
 }
