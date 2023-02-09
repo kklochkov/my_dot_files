@@ -49,4 +49,5 @@ return {
       action = wezterm.action.SplitVertical{domain="CurrentPaneDomain"},
     },
   },
+  pane_focus_follows_mouse = true,
 }
