@@ -192,7 +192,7 @@ function FormatBazel()
   echo 'Formatting ' . path
 
   silent! undojoin
-  silent! execute '!/home/kklochkov/go/bin/buildifier --mode=fix ' . path
+  silent! execute '!/home/kklochkov/go/bin/buildifier --lint=fix --mode=fix -warnings all ' . path
 
   if v:shell_error != 0
    undo
