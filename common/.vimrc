@@ -167,13 +167,32 @@ nmap <F3> :mks! ~/develop/*.vim
 
 " auto formatting using the clang-format tooling
 function FormatSources()
-  let pos = getpos('.')
-  let view = winsaveview()
+  let l:pos = getpos('.')
+  let l:view = winsaveview()
+  let l:path = expand('%:p')
 
-  echo 'Formatting ' . expand('%:p')
+  echo 'Formatting ' . path
 
   silent! undojoin
-  silent % !clang-format %
+  silent! execute '!clang-format ' . path
+
+  if v:shell_error != 0
+   undo
+  endif
+
+  call setpos('.', pos)
+  call winrestview(view)
+endfunction
+
+function FormatBazel()
+  let l:pos = getpos('.')
+  let l:view = winsaveview()
+  let l:path = expand('%:p')
+
+  echo 'Formatting ' . path
+
+  silent! undojoin
+  silent! execute '!/home/kklochkov/go/bin/buildifier --mode=fix ' . path
 
   if v:shell_error != 0
    undo
@@ -193,6 +212,7 @@ augroup develop
 
   " apply autoformat
   autocmd BufWritePost *.h,*.hh,*.inl,*.cc,*.hpp,*.cpp call FormatSources()
+  autocmd BufWritePost *.bzl,WORKSPACE,BUILD,*.BUILD call FormatBazel()
 
   " trim whitespaces
   autocmd BufWritePre * :%s/\s\+$//e
