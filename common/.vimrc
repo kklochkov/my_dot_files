@@ -216,7 +216,6 @@ function FormatPython()
    undo
   endif
 
-  silent! undojoin
   silent! execute '!black --quiet ' . path
 
   if v:shell_error != 0
