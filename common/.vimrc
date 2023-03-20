@@ -147,7 +147,7 @@ inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 nmap <silent> <C-M-right> :bnext <CR>
 " on mac escape sequence ^[[1;7C
 nmap <silent> <C-M-left> :bprev <CR>
-nmap <silent> <C-w> :bp <BAR> bd #<CR>
+nmap <silent> <C-w> :bp <BAR> bd! #<CR>
 
 " coc-explorer
 nmap <silent> <C-b> :CocCommand explorer<CR>
@@ -202,6 +202,31 @@ function FormatBazel()
   call winrestview(view)
 endfunction
 
+function FormatPython()
+  let l:pos = getpos('.')
+  let l:view = winsaveview()
+  let l:path = expand('%:p')
+
+  echo 'Formatting ' . path
+
+  silent! undojoin
+  silent! execute '!isort --quiet ' . path
+
+  if v:shell_error != 0
+   undo
+  endif
+
+  silent! undojoin
+  silent! execute '!black --quiet ' . path
+
+  if v:shell_error != 0
+   undo
+  endif
+
+  call setpos('.', pos)
+  call winrestview(view)
+endfunction
+
 highlight ExtraWhitespace ctermbg=red guibg=red
 
 augroup develop
@@ -213,6 +238,7 @@ augroup develop
   " apply autoformat
   autocmd BufWritePost *.h,*.hh,*.inl,*.cc,*.hpp,*.cpp call FormatSources()
   autocmd BufWritePost *.bzl,WORKSPACE,BUILD,*.BUILD call FormatBazel()
+  autocmd BufWritePost *.py call FormatPython()
 
   " trim whitespaces
   autocmd BufWritePre * :%s/\s\+$//e
