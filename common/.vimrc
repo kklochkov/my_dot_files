@@ -210,7 +210,7 @@ function FormatPython()
   echo 'Formatting ' . path
 
   silent! undojoin
-  silent! execute '!isort --quiet ' . path
+  silent! execute '!isort --profile black --quiet ' . path
 
   if v:shell_error != 0
    undo
