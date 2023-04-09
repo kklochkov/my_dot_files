@@ -140,7 +140,7 @@ nmap <silent> gh :CocCommand clangd.switchSourceHeader<CR>
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Make <CR> auto-select the first completion item and notify coc.nvim to
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<CR>"
 
 " buffers
 " on mac escape sequence ^[[1;7D
@@ -192,7 +192,7 @@ function FormatBazel()
   echo 'Formatting ' . path
 
   silent! undojoin
-  silent! execute '!/home/kklochkov/go/bin/buildifier --lint=fix --mode=fix -warnings all ' . path
+  silent! execute '!~/go/bin/buildifier --lint=fix --mode=fix -warnings all ' . path
 
   if v:shell_error != 0
    undo
@@ -236,7 +236,7 @@ augroup develop
 
   " apply autoformat
   autocmd BufWritePost *.h,*.hh,*.inl,*.cc,*.hpp,*.cpp call FormatSources()
-  autocmd BufWritePost *.bzl,WORKSPACE,BUILD,*.BUILD call FormatBazel()
+  autocmd BufWritePost *.bzl,WORKSPACE,BUILD,*.BUILD,BUILD.bazel call FormatBazel()
   autocmd BufWritePost *.py call FormatPython()
 
   " trim whitespaces

@@ -13,3 +13,5 @@ export LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 export PATH=$PATH:~/develop/mosh/bin
+
+alias exa_ls="exa -ahl"
