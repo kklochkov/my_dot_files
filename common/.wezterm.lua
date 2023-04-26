@@ -1,5 +1,10 @@
 local wezterm = require 'wezterm';
 
+--wezterm.on("update-right-status", function(window, pane)
+--  local success, status, stderr = wezterm.run_child_process{"python3", "-u", "/home/kklochkov/develop/my_dot_files/common/my_i3_status.py", "-m", "shell", "-d", "/dev/mapper/vgubuntu-root"}
+--  window:set_right_status(status);
+--end);
+
 return {
   -- https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf
   font = wezterm.font_with_fallback {
@@ -20,7 +25,8 @@ return {
       remote_address = 'kklochkov-bbox',
       username = 'kklochkov',
     },
-  },  inactive_pane_hsb = {
+  },
+  inactive_pane_hsb = {
     saturation = 1.0,
     brightness = 0.3,
   },
