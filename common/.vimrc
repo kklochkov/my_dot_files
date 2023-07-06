@@ -84,6 +84,9 @@ Plug 'mboughaba/i3config.vim'
 " QML
 Plug 'peterhoeg/vim-qml'
 
+" Copilot
+Plug 'github/copilot.vim'
+
 call plug#end()
 
 " Run PlugInstall if there are missing plugins
