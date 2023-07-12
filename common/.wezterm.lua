@@ -6,9 +6,9 @@ local wezterm = require 'wezterm';
 --end);
 
 return {
-  -- https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf
+  -- https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/DroidSansMono
   font = wezterm.font_with_fallback {
-    'DroidSansMono Nerd Font Mono',
+    'DroidSansM Nerd Font Mono',
     'DejaVuSans',
   },
   font_size = 12,
@@ -38,7 +38,7 @@ return {
   },
   window_frame = {
     font = wezterm.font_with_fallback {
-      'DroidSansMono Nerd Font Mono',
+      'DroidSansM Nerd Font Mono',
       'DejaVuSans',
     },
     font_size = 10,
