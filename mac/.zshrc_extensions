@@ -8,7 +8,7 @@ no_machine()
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 
-alias exa_ls="exa -ahl"
+alias ell="exa -ahl"
 
 plugins=(
   git
