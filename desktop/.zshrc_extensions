@@ -15,6 +15,7 @@ plugins=(
   zsh-interactive-cd
   zsh-navigation-tools
   zsh-autosuggestions
+  zsh-autocomplete
 )
 
 # remap capslock for whole system to ESC (X only)
