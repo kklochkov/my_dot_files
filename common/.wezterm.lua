@@ -27,7 +27,7 @@ local config = {
     'DroidSansM Nerd Font Mono',
     'DejaVuSans',
   },
-  font_size = 12,
+  font_size = 13,
   color_scheme = "Monokai Soda",
   unix_domains = {
     {
@@ -57,7 +57,7 @@ local config = {
       'DroidSansM Nerd Font Mono',
       'DejaVuSans',
     },
-    font_size = 10,
+    font_size = 12,
   },
   keys = {
     {
