@@ -76,29 +76,6 @@
 # A REFERENCE ONLY, WHEN MAKING YOUR OWN CONFIGURATION..          #
 # ############################################################### #
 
-# focus window
-ctrl + cmd - left  : yabai -m window --focus west || yabai -m window --focus stack.prev || yabai -m window --focus stack.last
-ctrl + cmd - right : yabai -m window --focus east || yabai -m window --focus stack.next || yabai -m window --focus stack.first
-ctrl + cmd - down  : yabai -m window --focus south || yabai -m window --focus stack.prev || yabai -m window --focus stack.last
-ctrl + cmd - up    : yabai -m window --focus north || yabai -m window --focus stack.next || yabai -m window --focus stack.first
-
-# move managed window
-shift + ctrl + cmd - left  : yabai -m window --warp west
-shift + ctrl + cmd - right : yabai -m window --warp east
-shift + ctrl + cmd - down  : yabai -m window --warp south
-shift + ctrl + cmd - up    : yabai -m window --warp north
-
-#layout
-shift + ctrl + cmd - s : yabai -m config layout stack
-shift + ctrl + cmd - b : yabai -m config layout bsp
-
-# linux bindings
-cmd - left : skhd -k "alt - left"
-cmd - right : skhd -k "alt - right"
-shift - home : skhd -k "ctrl + shift - a"
-shift - end  : skhd -k "ctrl + shift - e"
-home : skhd -k "ctrl - a"
-end : skhd -k "ctrl - e"
-
 # run apps
-cmd - return : open -na /Applications/iTerm.app
+cmd - return         : wezterm
+shift + cmd - return : wezterm connect kklochkov-bbox
