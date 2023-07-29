@@ -52,7 +52,7 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'bfrg/vim-cpp-modern'
 
 " colorschemes
-Plug 'tinted-theming/base16-vim'
+Plug 'rafi/awesome-vim-colorschemes'
 
 " fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -91,14 +91,11 @@ let g:cpp_attributes_highlight = 1
 let g:cpp_member_highlight = 1
 let g:cpp_simple_highlight = 1
 
-" base16 colorscheme settings
-colorscheme base16-gruvbox-dark-medium
-let base16_colorspace=256 " Access colors present in 256 colorspaceet noemoji
-let base16_background_transparent=1 " Make vim background transparent to work alongside transparent terminal backgrounds
-highlight Comment cterm=None " fix up comments
+" gruvbox
+colorscheme gruvbox
 
 " airline
-let g:airline_theme = 'base16_gruvbox_dark_medium'
+let g:airline_theme = 'gruvbox'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
@@ -109,20 +106,6 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gh :CocCommand clangd.switchSourceHeader<CR>
-
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-"inoremap <silent><expr> <TAB>
-"      \ pumvisible() ? "\<C-n>" :
-"      \ <SID>check_back_space() ? "\<TAB>" :
-"      \ coc#refresh()
-"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-"
-"function! s:check_back_space() abort
-"  let col = col('.') - 1
-"  return !col || getline('.')[col - 1]  =~# '\s'
-"endfunction
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -136,36 +119,6 @@ nmap <silent> <C-M-right> :bnext <CR>
 " on mac escape sequence ^[[1;7C
 nmap <silent> <C-M-left> :bprev <CR>
 nmap <silent> <C-w> :bp <BAR> bd! #<CR>
-
-"" netrw
-"let g:netrw_banner = 0
-"let g:netrw_liststyle = 3
-"let g:netrw_browse_split = 4
-"let g:netrw_altv = 1
-"let g:netrw_winsize = 20
-"let g:netrw_keepdir = 0
-"let g:NetrwIsOpen=0
-"
-"function! ToggleNetrw()
-"    if g:NetrwIsOpen
-"        let i = bufnr("$")
-"        while (i >= 1)
-"            if (getbufvar(i, "&filetype") == "netrw")
-"                silent exe "bwipeout " . i
-"            endif
-"            let i-=1
-"        endwhile
-"        let g:NetrwIsOpen=0
-"    else
-"        let g:NetrwIsOpen=1
-"        " reveal file
-"        " https://superuser.com/a/1536118
-"        silent let @/=expand("%:t") | execute 'Lexplore' expand("%:h") | normal n
-"    endif
-"endfunction
-"
-"" Add your own mapping. For example:
-"noremap <C-b> :call ToggleNetrw()<CR>
 
 " coc-explorer
 nmap <C-b> :CocCommand explorer<CR>
