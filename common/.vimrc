@@ -34,6 +34,7 @@ set list
 set listchars=tab:→\ ,nbsp:␣,space:·,trail:·,extends:⟩,precedes:⟨
 set noendofline
 set noemoji
+set hlsearch
 
 " Install vim-plug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -51,38 +52,21 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'bfrg/vim-cpp-modern'
 
 " colorschemes
-Plug 'gruvbox-community/gruvbox'
+Plug 'tinted-theming/base16-vim'
 
-" telescope
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" fzf
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 " powerline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
-" git
-Plug 'tpope/vim-fugitive'
 
 " fonts support
 " Droid Sans Mono for Powerline Nerd Font Complete.otf looks the best.
 " In order to apply this font, one needs to put in in ~/.local/share/fonts,
 " then select it in gnome-tweaks under 'Fonts->Monospace text'.
 Plug 'ryanoasis/vim-devicons'
-
-" tmux
-" Plug 'ojroques/vim-oscyank' "gnome terminal doesn't support OSC52
-
-" css color highlighter
-Plug 'ap/vim-css-color'
-
-" i3 syntax highlight
-Plug 'mboughaba/i3config.vim'
-
-" QML
-Plug 'peterhoeg/vim-qml'
 
 " Copilot
 Plug 'github/copilot.vim'
@@ -107,13 +91,14 @@ let g:cpp_attributes_highlight = 1
 let g:cpp_member_highlight = 1
 let g:cpp_simple_highlight = 1
 
-" gruvbox
-let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_italic = 1
-colorscheme gruvbox
+" base16 colorscheme settings
+colorscheme base16-gruvbox-dark-medium
+let base16_colorspace=256 " Access colors present in 256 colorspaceet noemoji
+let base16_background_transparent=1 " Make vim background transparent to work alongside transparent terminal backgrounds
+highlight Comment cterm=None " fix up comments
 
 " airline
-let g:airline_theme = 'gruvbox'
+let g:airline_theme = 'base16_gruvbox_dark_medium'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
@@ -152,17 +137,46 @@ nmap <silent> <C-M-right> :bnext <CR>
 nmap <silent> <C-M-left> :bprev <CR>
 nmap <silent> <C-w> :bp <BAR> bd! #<CR>
 
-" coc-explorer
-nmap <silent> <C-b> :CocCommand explorer<CR>
+"" netrw
+"let g:netrw_banner = 0
+"let g:netrw_liststyle = 3
+"let g:netrw_browse_split = 4
+"let g:netrw_altv = 1
+"let g:netrw_winsize = 20
+"let g:netrw_keepdir = 0
+"let g:NetrwIsOpen=0
+"
+"function! ToggleNetrw()
+"    if g:NetrwIsOpen
+"        let i = bufnr("$")
+"        while (i >= 1)
+"            if (getbufvar(i, "&filetype") == "netrw")
+"                silent exe "bwipeout " . i
+"            endif
+"            let i-=1
+"        endwhile
+"        let g:NetrwIsOpen=0
+"    else
+"        let g:NetrwIsOpen=1
+"        " reveal file
+"        " https://superuser.com/a/1536118
+"        silent let @/=expand("%:t") | execute 'Lexplore' expand("%:h") | normal n
+"    endif
+"endfunction
+"
+"" Add your own mapping. For example:
+"noremap <C-b> :call ToggleNetrw()<CR>
 
-" telescope
-nmap <silent> <C-p> :Telescope find_files<CR>
-nmap <silent> <C-A-p> :Telescope buffers<CR>
-nmap <silent> <C-f> :Telescope live_grep<CR>
+" coc-explorer
+nmap <C-b> :CocCommand explorer<CR>
+
+" fzf
+nmap <C-p> :Files<CR>
+nmap <C-A-p> :Buffers<CR>
+nmap <C-f> :Rg<CR>
 
 " clear selection
-nnoremap <silent> <Esc><Esc> :noh<CR>:redraw!<CR>
-
+nmap <Esc><Esc> :noh<CR>:redraw!<CR>
 
 " saving
 nmap <F2> :w<CR>
@@ -250,8 +264,4 @@ augroup develop
   autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
   autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
   autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-
-  " i3
-  autocmd BufNewFile,BufRead ~/.config/i3/config set filetype=i3config
 augroup END
-
