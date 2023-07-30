@@ -1,3 +1,4 @@
+set nocompatible " https://askubuntu.com/a/353944
 syntax on
 set encoding=utf-8
 set noerrorbells
@@ -101,11 +102,11 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 
 " GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <silent> gh :CocCommand clangd.switchSourceHeader<CR>
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> gy <Plug>(coc-type-definition)
+nnoremap <silent> gi <Plug>(coc-implementation)
+nnoremap <silent> gr <Plug>(coc-references)
+nnoremap <silent> gh :CocCommand clangd.switchSourceHeader<CR>
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -115,25 +116,25 @@ inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<CR>"
 
 " buffers
 " on mac escape sequence ^[[1;7D
-nmap <silent> <C-M-right> :bnext <CR>
+nnoremap <silent> <C-M-right> :bnext <CR>
 " on mac escape sequence ^[[1;7C
-nmap <silent> <C-M-left> :bprev <CR>
-nmap <silent> <C-w> :bp <BAR> bd! #<CR>
+nnoremap <silent> <C-M-left> :bprev <CR>
+nnoremap <silent> <C-w> :bp <BAR> bd! #<CR>
 
 " coc-explorer
-nmap <C-b> :CocCommand explorer<CR>
+nnoremap <C-b> :CocCommand explorer<CR>
 
 " fzf
-nmap <C-p> :Files<CR>
-nmap <C-A-p> :Buffers<CR>
-nmap <C-f> :Rg<CR>
+nnoremap <C-p> :Files<CR>
+nnoremap <C-A-p> :Buffers<CR>
+nnoremap <C-f> :Rg<CR>
 
 " clear selection
-nmap <Esc><Esc> :noh<CR>:redraw!<CR>
+nnoremap <Esc><Esc> :noh<CR>:redraw!<CR>
 
 " saving
-nmap <F2> :w<CR>
-nmap <F3> :mks! ~/develop/*.vim
+nnoremap <F2> :w<CR>
+nnoremap <F3> :mks! ~/develop/*.vim
 
 " auto formatting using the clang-format tooling
 function FormatSources()
