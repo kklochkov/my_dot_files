@@ -22,7 +22,7 @@ set mouse=a
 set cmdheight=2
 set shortmess+=c
 set colorcolumn=120
-set clipboard+=unnamedplus
+set clipboard=unnamedplus,unnamed " https://vi.stackexchange.com/a/96
 set signcolumn=yes
 set termguicolors
 set scrolloff=8
@@ -134,6 +134,12 @@ nmap <Esc><Esc> :noh<CR>:redraw!<CR>
 " saving
 nmap <F2> :w<CR>
 nmap <F3> :mks! ~/develop/*.vim
+
+" copy/paste: https://vi.stackexchange.com/a/96
+noremap <Leader>y "*y
+noremap <Leader>p "*p
+noremap <Leader>Y "+y
+noremap <Leader>P "+p
 
 " auto formatting using the clang-format tooling
 function FormatSources()
