@@ -135,12 +135,6 @@ nmap <Esc><Esc> :noh<CR>:redraw!<CR>
 nmap <F2> :w<CR>
 nmap <F3> :mks! ~/develop/*.vim
 
-" copy/paste: https://vi.stackexchange.com/a/96
-noremap <Leader>y "*y
-noremap <Leader>p "*p
-noremap <Leader>Y "+y
-noremap <Leader>P "+p
-
 " auto formatting using the clang-format tooling
 function FormatSources()
   let l:pos = getpos('.')
