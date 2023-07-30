@@ -9,6 +9,8 @@
       "--clang-tidy",
       "--background-index=1"
   ],
+  "clangd.inlayHints.enable": false,
+  "inlayHint.enable": false,
   "clangd.fallbackFlags": ["-std=c++17"],
   "explorer.file.showHiddenFiles": true,
   "explorer.file.reveal.auto": true,
