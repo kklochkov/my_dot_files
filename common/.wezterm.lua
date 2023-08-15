@@ -28,7 +28,8 @@ local config = {
     'DejaVuSans',
   },
   font_size = 13,
-  color_scheme = "Monokai Soda",
+  --color_scheme = 'Gruvbox (Gogh)',
+  color_scheme = 'Gruvbox Dark (Gogh)',
   unix_domains = {
     {
       name = 'unix',
@@ -71,7 +72,8 @@ local config = {
       action = wezterm.action.SplitVertical{domain="CurrentPaneDomain"},
     },
   },
-  pane_focus_follows_mouse = true,
+--  pane_focus_follows_mouse = true, -- if enabled, might lead to high CPU consumption (because of relayouting)
+  animation_fps = 1,
 }
 
 return config
