@@ -4,8 +4,8 @@ set -e
 
 device=$1
 
-if [[ $device != "laptop" ]] && [[ $device != "desktop" ]] && [[ $device != "mac" ]]; then
-  echo "Only 'laptop', 'desktop' or 'mac' option is supported!"
+if [[ $device != "desktop" ]] && [[ $device != "mac" ]]; then
+  echo "Only 'desktop' or 'mac' option is supported!"
   exit 1
 fi
 
