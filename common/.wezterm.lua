@@ -36,20 +36,26 @@ local config = {
     },
   },
   default_gui_startup_args = { 'connect', 'unix' },
-  ssh_domains = {
-    {
-      name = 'kklochkov-bbox-ssh',
-      remote_address = 'kklochkov-bbox',
-      username = 'kklochkov',
-    },
-  },
-  tls_clients = {
-    {
-      name = 'kklochkov-bbox-tls',
-      remote_address = 'tw-0023:29290',
-      bootstrap_via_ssh = 'kklochkov@kklochkov-bbox',
-    },
-  },
+-- TODO: factor this out into a separate config files and load them depending on a platform
+--  ssh_domains = {
+--    {
+--      name = 'kklochkov-bbox-ssh',
+--      remote_address = 'kklochkov-bbox',
+--      username = 'kklochkov',
+--    },
+--  },
+--  tls_clients = {
+--    {
+--      name = 'kklochkov-bbox-tls',
+--      remote_address = 'tw-0023:29290',
+--      bootstrap_via_ssh = 'kklochkov@kklochkov-bbox',
+--    },
+--  },
+--  tls_servers = {
+--    {
+--      bind_address = '172.16.103.172:29290',
+--    },
+--  },
   inactive_pane_hsb = {
     saturation = 1.0,
     brightness = 0.3,
@@ -80,7 +86,8 @@ local config = {
     },
   },
 --  pane_focus_follows_mouse = true, -- if enabled, might lead to high CPU consumption (because of relayouting)
-  animation_fps = 1,
+--  status_update_interval = 1000, -- is used with wezterm.on("update-right-status", ...)
+  animation_fps = 1, -- save some CPU
 }
 
 return config
