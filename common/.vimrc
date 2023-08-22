@@ -72,6 +72,9 @@ Plug 'ryanoasis/vim-devicons'
 " Copilot
 Plug 'github/copilot.vim'
 
+" A Vim plugin to copy text through SSH with OSC52
+Plug 'ojroques/vim-oscyank', {'branch': 'main'}
+
 call plug#end()
 
 " Run PlugInstall if there are missing plugins
@@ -127,7 +130,7 @@ nnoremap <C-b> :CocCommand explorer<CR>
 " fzf
 nnoremap <C-p> :Files<CR>
 nnoremap <C-A-p> :Buffers<CR>
-nnoremap <C-f> :Rg<CR>
+nnoremap <C-f> :RG<CR>
 
 " clear selection
 nnoremap <Esc><Esc> :noh<CR>:redraw!<CR>
@@ -199,6 +202,12 @@ endfunction
 
 highlight ExtraWhitespace ctermbg=red guibg=red
 
+function OSC52yank()
+  if v:event.operator is 'y'
+      execute 'OSCYankRegister ' . v:event.regname
+  endif
+endfunction
+
 augroup develop
   autocmd!
 
@@ -218,4 +227,7 @@ augroup develop
   autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
   autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
   autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+
+  " yank to OSC52
+  autocmd TextYankPost * call OSC52yank()
 augroup END
