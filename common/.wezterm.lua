@@ -38,9 +38,16 @@ local config = {
   default_gui_startup_args = { 'connect', 'unix' },
   ssh_domains = {
     {
-      name = 'kklochkov-bbox',
+      name = 'kklochkov-bbox-ssh',
       remote_address = 'kklochkov-bbox',
       username = 'kklochkov',
+    },
+  },
+  tls_clients = {
+    {
+      name = 'kklochkov-bbox-tls',
+      remote_address = 'tw-0023:29290',
+      bootstrap_via_ssh = 'kklochkov@kklochkov-bbox',
     },
   },
   inactive_pane_hsb = {
