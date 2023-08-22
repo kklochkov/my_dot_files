@@ -45,12 +45,6 @@ if [ -f ~/.vimrc ] || [ -L ~/.vimrc ]; then
 fi
 ln -s $common_path/.vimrc ~/.vimrc
 
-if [ -f ~/.tmux.conf ] || [ -L ~/.tmux.conf ]; then
-  echo "Renaming '~/.tmux.conf' to '~/.tmux.conf.bak'"
-  mv ~/.tmux.conf ~/.tmux.conf.bak
-fi
-ln -s $common_path/.tmux.conf ~/.tmux.conf
-
 if [ -d ~/.config/nvim ] || [ -L ~/.config/nvim ]; then
   echo "Renaming '~/.config/nvim' to '~/.config/nvim_bak'"
   mv ~/.config/nvim ~/.config/nvim_bak
@@ -67,6 +61,6 @@ if [ -f ~/.wezterm.lua ] || [ -L ~/.wezterm.lua ]; then
   echo "Renaming '~/.wezterm.lua' to '~/.wezterm.lua.bak'"
   mv ~/.wezterm.lua ~/.wezterm.lua.bak
 fi
-ln -s $common_path/.wezterm.lua ~/.wezterm.lua
+ln -s $device_path/.wezterm.lua ~/.wezterm.lua
 
 echo "Done."
