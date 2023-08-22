@@ -78,4 +78,4 @@
 
 # run apps
 cmd - return         : wezterm
-shift + cmd - return : wezterm connect kklochkov-bbox
+shift + cmd - return : wezterm connect kklochkov-bbox-tls
