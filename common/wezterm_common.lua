@@ -21,7 +21,7 @@ wezterm.on('gui-attached', function(domain)
   end
 end)
 
-local config = {
+local default_config = {
   -- https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/DroidSansMono
   font = wezterm.font_with_fallback {
     'DroidSansM Nerd Font Mono',
@@ -36,26 +36,6 @@ local config = {
     },
   },
   default_gui_startup_args = { 'connect', 'unix' },
--- TODO: factor this out into a separate config files and load them depending on a platform
---  ssh_domains = {
---    {
---      name = 'kklochkov-bbox-ssh',
---      remote_address = 'kklochkov-bbox',
---      username = 'kklochkov',
---    },
---  },
---  tls_clients = {
---    {
---      name = 'kklochkov-bbox-tls',
---      remote_address = 'tw-0023:29290',
---      bootstrap_via_ssh = 'kklochkov@kklochkov-bbox',
---    },
---  },
---  tls_servers = {
---    {
---      bind_address = '172.16.103.172:29290',
---    },
---  },
   inactive_pane_hsb = {
     saturation = 1.0,
     brightness = 0.3,
@@ -90,4 +70,4 @@ local config = {
   animation_fps = 1, -- save some CPU
 }
 
-return config
+return default_config
