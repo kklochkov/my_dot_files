@@ -2,13 +2,25 @@
 alias udevd_stop='sudo systemctl stop systemd-udevd systemd-udevd-kernel.socket systemd-udevd-control.socket'
 alias udevd_start='sudo systemctl start systemd-udevd systemd-udevd-kernel.socket systemd-udevd-control.socket'
 
+ssh_add()
+{
+  SSH_KEY=~/.ssh/id_ed25519
+  if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+    eval $(ssh-agent)
+    ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+    ssh-add $SSH_KEY
+  else
+    echo "The key ${SSH_KEY} has been already added."
+  fi
+  export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+}
+
 no_machine()
 {
   /usr/NX/bin/nxplayer --session kklochkov-bbox.nxs & disown && exit
 }
 
 alias clear_ram_caches='sync; sudo sh -c "echo 2 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a"'
-alias ssh_add='eval $(ssh-agent) && ssh-add ~/.ssh/id_ed25519'
 
 export VISUAL=vi
 export EDITOR="$VISUAL"
