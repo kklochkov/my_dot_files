@@ -45,4 +45,5 @@ plugins=(
   zsh-autosuggestions
   zsh-autocomplete
   zsh-fast-syntax-highlighting
+  bazel
 )

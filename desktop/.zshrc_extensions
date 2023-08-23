@@ -43,6 +43,7 @@ plugins=(
   zsh-autosuggestions
   zsh-autocomplete
   zsh-fast-syntax-highlighting
+  bazel
 )
 
 # remap capslock for whole system to ESC (X only)
