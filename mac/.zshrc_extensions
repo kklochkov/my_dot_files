@@ -1,16 +1,3 @@
-ssh_add()
-{
-  SSH_KEY=~/.ssh/id_ed25519
-  if [ ! -S ~/.ssh/ssh_auth_sock ]; then
-    eval $(ssh-agent)
-    ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
-    ssh-add $SSH_KEY
-  else
-    echo "The key ${SSH_KEY} has been already added."
-  fi
-  export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
-}
-
 no_machine()
 {
   /Applications/NoMachine.app/Contents/MacOS/nxplayer --session kklochkov-bbox.nxs & disown && exit
@@ -31,4 +18,5 @@ plugins=(
   zsh-navigation-tools
   zsh-autosuggestions
   bazel
+  ssh-agent
 )
