@@ -1,18 +1,5 @@
 alias clear_ram_caches='sync; sudo sh -c "echo 2 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a"'
 
-ssh_add()
-{
-  SSH_KEY=~/.ssh/id_ed25519
-  if [ ! -S ~/.ssh/ssh_auth_sock ]; then
-    eval $(ssh-agent)
-    ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
-    ssh-add $SSH_KEY
-  else
-    echo "The key ${SSH_KEY} has been already added."
-  fi
-  export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
-}
-
 export VISUAL=nvim.appimage
 export EDITOR="$VISUAL"
 export DISPLAY=:1 # required for xclip/xsel while using remote connection
@@ -29,6 +16,7 @@ plugins=(
   zsh-navigation-tools
   zsh-autosuggestions
   bazel
+  ssh-agent
 )
 
 # remap capslock for whole system to ESC (X only)
