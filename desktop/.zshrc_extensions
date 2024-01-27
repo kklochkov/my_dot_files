@@ -3,6 +3,7 @@ alias clear_ram_caches='sync; sudo sh -c "echo 2 > /proc/sys/vm/drop_caches && s
 export VISUAL=nvim.appimage
 export EDITOR="$VISUAL"
 export DISPLAY=:1 # required for xclip/xsel while using remote connection
+export FZF_DEFAULT_COMMAND='rg --files'
 
 alias ell="exa -ahl"
 
