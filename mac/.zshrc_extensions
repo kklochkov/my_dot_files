@@ -5,6 +5,7 @@ no_machine()
 
 export VISUAL=nvim
 export EDITOR="$VISUAL"
+export FZF_DEFAULT_COMMAND='rg --files'
 
 alias ell="exa -ahl"
 
