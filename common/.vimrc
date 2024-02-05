@@ -105,7 +105,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 
 " copilot
-let g:copilot_filetypes = { 'markdown': v:true, 'gitcommit': true }
+let g:copilot_filetypes = { 'markdown': v:true, 'gitcommit': v:true }
 
 " GoTo code navigation.
 nnoremap <silent> gd <Plug>(coc-definition)
