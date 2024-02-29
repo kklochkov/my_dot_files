@@ -142,25 +142,6 @@ nnoremap <Esc><Esc> :noh<CR>:redraw!<CR>
 nnoremap <F2> :w<CR>
 nnoremap <F3> :mks! ~/develop/*.vim
 
-" auto formatting using the clang-format tooling
-function FormatSources()
-  let l:pos = getpos('.')
-  let l:view = winsaveview()
-  let l:path = expand('%:p')
-
-  echo 'Formatting ' . path
-
-  silent! undojoin
-  silent! execute '!clang-format -i ' . path
-
-  if v:shell_error != 0
-   undo
-  endif
-
-  call setpos('.', pos)
-  call winrestview(view)
-endfunction
-
 function FormatBazel()
   let l:pos = getpos('.')
   let l:view = winsaveview()
@@ -170,30 +151,6 @@ function FormatBazel()
 
   silent! undojoin
   silent! execute '!~/go/bin/buildifier --lint=fix --mode=fix -warnings all ' . path
-
-  if v:shell_error != 0
-   undo
-  endif
-
-  call setpos('.', pos)
-  call winrestview(view)
-endfunction
-
-function FormatPython()
-  let l:pos = getpos('.')
-  let l:view = winsaveview()
-  let l:path = expand('%:p')
-
-  echo 'Formatting ' . path
-
-  silent! undojoin
-  silent! execute '!isort --profile black --quiet ' . path
-
-  if v:shell_error != 0
-   undo
-  endif
-
-  silent! execute '!black --quiet ' . path
 
   if v:shell_error != 0
    undo
@@ -218,9 +175,8 @@ augroup develop
   autocmd BufEnter *.qml :setlocal filetype=qml
 
   " apply autoformat
-  autocmd BufWritePost *.h,*.hh,*.inl,*.cc,*.hpp,*.cpp call FormatSources()
+  autocmd BufWritePost *.h,*.hh,*.inl,*.cc,*.hpp,*.cpp,*py call CocActionAsync('format')
   autocmd BufWritePost *.bzl,WORKSPACE,BUILD,*.BUILD,BUILD.bazel call FormatBazel()
-  autocmd BufWritePost *.py call FormatPython()
 
   " trim whitespaces
   autocmd BufWritePre * :%s/\s\+$//e

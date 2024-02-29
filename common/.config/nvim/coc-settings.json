@@ -1,5 +1,5 @@
 {
-  "clangd.path": "clangd",
+  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/17.0.3/clangd_17.0.3/bin/clangd",
   "clangd.semanticHighlighting": true,
   "clangd.enabled": true,
   "clangd.arguments": [
@@ -10,8 +10,8 @@
       "--background-index=1"
   ],
   "clangd.inlayHints.enable": false,
-  "inlayHint.enable": false,
   "clangd.fallbackFlags": ["-std=c++17"],
+  "inlayHint.enable": false,
   "explorer.file.showHiddenFiles": true,
   "explorer.file.reveal.auto": true,
   "explorer.mouseMode": "singleclick",
