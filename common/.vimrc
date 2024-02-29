@@ -175,7 +175,7 @@ augroup develop
   autocmd BufEnter *.qml :setlocal filetype=qml
 
   " apply autoformat
-  autocmd BufWritePost *.h,*.hh,*.inl,*.cc,*.hpp,*.cpp,*py call CocActionAsync('format')
+  autocmd BufWritePost *.h,*.hh,*.inl,*.cc,*.hpp,*.cpp,*py call CocAction('format')
   autocmd BufWritePost *.bzl,WORKSPACE,BUILD,*.BUILD,BUILD.bazel call FormatBazel()
 
   " trim whitespaces
