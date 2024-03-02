@@ -1,4 +1,6 @@
 {
+  // to generate correct paths for clangd, run `bazel run @hedron_compile_commands//:refresh_all`
+  // inside of the project root
   "clangd.path": "${cwd}/external/llvm_toolchain_llvm/bin/clangd",
   "clangd.semanticHighlighting": true,
   "clangd.enabled": true,
