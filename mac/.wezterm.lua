@@ -5,17 +5,17 @@ local wezterm_common = require 'wezterm_common';
 
 wezterm_common.ssh_domains = {
   {
-    name = 'kklochkov-bbox-ssh',
-    remote_address = 'kklochkov-bbox',
-    username = 'kklochkov',
+    name = 'nullptr-bbox-ssh',
+    remote_address = '192.168.178.54',
+    username = 'nullptr',
   },
 }
 
 wezterm_common.tls_clients = {
   {
-    name = 'kklochkov-bbox-tls',
-    remote_address = 'tw-0023:29290',
-    bootstrap_via_ssh = 'kklochkov@kklochkov-bbox',
+    name = 'nullptr-bbox-tls',
+    remote_address = 'nullptr-bbox:29290',
+    bootstrap_via_ssh = 'nullptr@nullptr-bbox',
   },
 }
 

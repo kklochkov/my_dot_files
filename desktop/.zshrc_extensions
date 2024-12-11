@@ -5,7 +5,7 @@ export EDITOR="$VISUAL"
 export DISPLAY=:1 # required for xclip/xsel while using remote connection
 export FZF_DEFAULT_COMMAND='rg --files'
 
-alias ell="exa -ahl"
+alias ell="eza -ahl"
 
 # NOTE: in order plugins to work, this script must be sources before `oh-my-zsh.sh`
 plugins=(
@@ -22,9 +22,3 @@ plugins=(
 
 zstyle :omz:plugins:ssh-agent quiet yes
 zstyle :omz:plugins:ssh-agent lazy yes
-
-# remap capslock for whole system to ESC (X only)
-# setxkbmap -option caps:escape
-
-# german layout
-# setxkbmap de

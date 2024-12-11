@@ -7,7 +7,7 @@ export VISUAL=nvim
 export EDITOR="$VISUAL"
 export FZF_DEFAULT_COMMAND='rg --files'
 
-alias ell="exa -ahl"
+alias ell="eza -ahl"
 
 # NOTE: in order plugins to work, this script must be sources before `oh-my-zsh.sh`
 plugins=(
