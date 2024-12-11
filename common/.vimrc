@@ -30,6 +30,7 @@ set scrolloff=8
 set completeopt=menuone,noselect,noinsert
 set updatetime=300
 set cursorline
+" set background=light
 set background=dark
 set list
 set listchars=tab:→\ ,nbsp:␣,space:·,trail:·,extends:⟩,precedes:⟨

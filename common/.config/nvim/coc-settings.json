@@ -11,7 +11,7 @@
       "--clang-tidy",
       "--background-index=1",
       "--log=verbose",
-      "--query-driver=${cwd}/external/llvm_toolchain/bin/**"
+      "--query-driver=${cwd}/external/toolchains_llvm~~llvm~llvm_toolchain_llvm/bin/**"
   ],
   "clangd.inlayHints.enable": false,
   "clangd.fallbackFlags": ["-std=c++17"],

@@ -1,22 +1,16 @@
 local wezterm = require 'wezterm';
 local mux = wezterm.mux
 
---wezterm.on("update-right-status", function(window, pane)
---  local success, status, stderr = wezterm.run_child_process{"python3", "-u", "/home/kklochkov/develop/my_dot_files/common/my_i3_status.py", "-m", "shell", "-d", "/dev/mapper/vgubuntu-root"}
---  window:set_right_status(status);
---end);
-
-wezterm.on('gui-startup', function(cmd)
-  local tab, pane, window = mux.spawn_window(cmd or {})
-  window:gui_window():maximize()
-end)
-
 wezterm.on('gui-attached', function(domain)
-  -- maximize all displayed windows on startup
   local workspace = mux.get_active_workspace()
+  local active_screen = wezterm.gui.screens()['active']
+  local screen_width = active_screen.width
+  local screen_height = active_screen.height
   for _, window in ipairs(mux.all_windows()) do
     if window:get_workspace() == workspace then
-      window:gui_window():maximize()
+      window:gui_window():set_position(0, 0)
+      window:gui_window():set_inner_size(screen_width / 2, screen_height)
+      window:gui_window():focus()
     end
   end
 end)
@@ -28,7 +22,7 @@ local default_config = {
     'DejaVuSans',
   },
   font_size = 13,
-  --color_scheme = 'Gruvbox (Gogh)',
+ -- color_scheme = 'Gruvbox (Gogh)',
   color_scheme = 'Gruvbox Dark (Gogh)',
   unix_domains = {
     {
@@ -38,7 +32,7 @@ local default_config = {
   default_gui_startup_args = { 'connect', 'unix' },
   inactive_pane_hsb = {
     saturation = 1.0,
-    brightness = 0.3,
+    brightness = 0.2,
   },
   window_padding = {
     left = 0,
@@ -65,9 +59,6 @@ local default_config = {
       action = wezterm.action.SplitVertical{domain="CurrentPaneDomain"},
     },
   },
---  pane_focus_follows_mouse = true, -- if enabled, might lead to high CPU consumption (because of relayouting)
---  status_update_interval = 1000, -- is used with wezterm.on("update-right-status", ...)
-  animation_fps = 1, -- save some CPU
 }
 
 return default_config

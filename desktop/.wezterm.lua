@@ -5,7 +5,7 @@ local wezterm_common = require 'wezterm_common';
 
 wezterm_common.tls_servers = {
   {
-    bind_address = '172.16.103.172:29290',
+    bind_address = '192.168.178.54:29290',
   },
 }
 
