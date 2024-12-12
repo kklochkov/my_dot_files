@@ -8,8 +8,8 @@ wezterm.on('gui-attached', function(domain)
   local screen_height = active_screen.height
   for _, window in ipairs(mux.all_windows()) do
     if window:get_workspace() == workspace then
-      window:gui_window():set_position(0, 0)
-      window:gui_window():set_inner_size(screen_width / 2, screen_height)
+      window:gui_window():set_position(screen_width * 0.25, 0)
+      window:gui_window():set_inner_size(screen_width * 0.5, screen_height * 0.9)
       window:gui_window():focus()
     end
   end
