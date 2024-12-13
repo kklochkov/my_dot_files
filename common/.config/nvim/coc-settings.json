@@ -1,17 +1,16 @@
 {
-  // to generate correct paths for clangd, run `bazel run @hedron_compile_commands//:refresh_all`
-  // inside of the project root
-  "clangd.path": "${cwd}/external/llvm_toolchain_llvm/bin/clangd",
+  // run `bazel run @hedron_compile_commands//:refresh_all` to generate compile_commands.json
+  "clangd.path": "${cwd}/external/toolchains_llvm~~llvm~llvm_toolchain_llvm/bin/clangd",
   "clangd.semanticHighlighting": true,
   "clangd.enabled": true,
   "clangd.arguments": [
-      "-j",
-      "16",
+      "-j=16",
       "--header-insertion=never",
       "--clang-tidy",
       "--background-index=1",
       "--log=verbose",
-      "--query-driver=${cwd}/external/toolchains_llvm~~llvm~llvm_toolchain_llvm/bin/**"
+  // this path must be the same as the one in compile_commands.json
+      "--query-driver=${cwd}/external/toolchains_llvm~~llvm~llvm_toolchain/bin/cc_wrapper.sh"
   ],
   "clangd.inlayHints.enable": false,
   "clangd.fallbackFlags": ["-std=c++17"],
