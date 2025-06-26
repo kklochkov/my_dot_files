@@ -77,5 +77,5 @@
 # ############################################################### #
 
 # run apps
-cmd - return         : wezterm
-shift + cmd - return : wezterm connect nullptr-bbox-tls
+cmd - return         : open -n -a wezterm
+shift + cmd - return : open -n -a wezterm --args connect nullptr-bbox-tls
