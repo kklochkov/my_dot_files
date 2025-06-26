@@ -1,5 +1,6 @@
 {
   // run `bazel run @hedron_compile_commands//:refresh_all` to generate compile_commands.json
+  // to debug clangd, run :CocCommand workspace.showOutput and select "clangd" from the dropdown
   "clangd.path": "${cwd}/external/toolchains_llvm~~llvm~llvm_toolchain_llvm/bin/clangd",
   "clangd.semanticHighlighting": true,
   "clangd.enabled": true,
@@ -7,7 +8,7 @@
       "-j=16",
       "--header-insertion=never",
       "--clang-tidy",
-      "--background-index=1",
+      "--background-index",
       "--log=verbose",
   // this path must be the same as the one in compile_commands.json
       "--query-driver=${cwd}/external/toolchains_llvm~~llvm~llvm_toolchain/bin/cc_wrapper.sh"
