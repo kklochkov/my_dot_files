@@ -25,6 +25,8 @@
     "hicpp",
     "nolint",
     "nolintbegin",
-    "nolintend"
+    "nolintend",
+    "nolintnextline",
+    "alignas"
   ]
 }
