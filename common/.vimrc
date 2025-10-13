@@ -83,6 +83,12 @@ autocmd VimEnter *
       \| PlugInstall --sync | q | source $MYVIMRC
       \| endif
 
+" suppress warnings
+let g:loaded_node_provider = 0
+let g:loaded_perl_provider = 0
+let g:loaded_ruby_provider = 0
+let g:loaded_python3_provider = 0
+
 " cpp, more info here https://github.com/bfrg/vim-cpp-modern
 let g:cpp_function_highlight = 1
 let g:cpp_attributes_highlight = 1
@@ -99,6 +105,10 @@ let g:airline_theme = 'gruvbox'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
+
+" This line needs to go after setting the theme to fix the inverted colors of
+" the status line. See the issue: https://github.com/vim-airline/vim-airline/issues/2693
+highlight StatusLine gui=NONE
 
 " copilot
 let g:copilot_filetypes = { 'markdown': v:true, 'gitcommit': v:true }

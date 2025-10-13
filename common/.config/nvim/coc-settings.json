@@ -27,6 +27,12 @@
     "nolintbegin",
     "nolintend",
     "nolintnextline",
-    "alignas"
+    "alignas",
+    "centi",
+    "IMGUI",
+    "PRESENTVSYNC",
+    "SDLK",
+    "RGBA",
+    "eigen"
   ]
 }
