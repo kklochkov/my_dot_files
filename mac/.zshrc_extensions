@@ -3,6 +3,33 @@ no_machine()
   /Applications/NoMachine.app/Contents/MacOS/nxplayer --session kklochkov-bbox.nxs & disown && exit
 }
 
+make_rsync_backup()
+{
+  if [ -z "$1" ]; then
+    echo "Error: No destination provided for rsync backup."
+    return 1
+  fi
+
+  backup_sources=(
+    "$HOME/develop"
+    "$HOME/Documents"
+    "$HOME/Downloads"
+    "$HOME/Pictures"
+  )
+
+  # Inspired by https://itsfoss.gitlab.io/post/how-to-backup-files-and-directories-using-rsync-in-linux/
+  for source in "${backup_sources[@]}"; do
+    echo "Backing up \"$source\" to \"$1\""
+    rsync -avhP --delete \
+      --filter=":- .gitignore" \
+      --exclude=".DS_Store" \
+      --exclude=".localized" \
+      --exclude=".git/" \
+      $source \
+      $1
+  done
+}
+
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 export FZF_DEFAULT_COMMAND='rg --files'
