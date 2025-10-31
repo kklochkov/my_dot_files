@@ -24,7 +24,7 @@ make_rsync_backup()
       --filter=":- .gitignore" \
       --exclude=".DS_Store" \
       --exclude=".localized" \
-      --exclude=".git/" \
+      --exclude=".git" \
       $source \
       $1
   done
